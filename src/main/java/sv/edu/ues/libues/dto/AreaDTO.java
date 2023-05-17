@@ -7,14 +7,14 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class AuthorDTO {
+public class AreaDTO {
 
     @EqualsAndHashCode.Include
-    private Long idAuthor;
+    private Long idArea;
 
     @NotNull
     @Size(min = 3, max = 60)
-    private String authorName;
+    private String areaName;
 
     @NotNull
     private boolean status;

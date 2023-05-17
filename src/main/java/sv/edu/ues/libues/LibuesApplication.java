@@ -9,5 +9,4 @@ public class LibuesApplication {
     public static void main(String[] args) {
         SpringApplication.run(LibuesApplication.class, args);
     }
-
 }

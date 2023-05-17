@@ -73,8 +73,8 @@ public class AuthorController {
 
     @GetMapping(value="/pageableAuthor", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<AuthorDTO>> listPageable(Pageable pageable) {
-        Page<AuthorDTO> specialtyDTO = service.listPageable(pageable).map(this::convertToDto);
-        return new ResponseEntity<>(specialtyDTO, OK);
+        Page<AuthorDTO> authorDTO = service.listPageable(pageable).map(this::convertToDto);
+        return new ResponseEntity<>(authorDTO, OK);
     }
 
     private AuthorDTO convertToDto(Author obj){
