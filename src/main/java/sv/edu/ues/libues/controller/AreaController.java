@@ -55,9 +55,9 @@ public class AreaController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody AreaDTO areaDTO) {
-        Area area = service.findById(areaDTO.getIdArea());
+        Area area = service.findById(areaDTO.idArea());
         if (area == null)
-            throw new ModelNotFoundException("ID NOT FOUND:" + areaDTO.getIdArea());
+            throw new ModelNotFoundException("ID NOT FOUND:" + areaDTO.idArea());
         return new ResponseEntity<>(service.update(convertToEntity(areaDTO)),OK);
     }
 

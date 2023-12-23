@@ -55,9 +55,9 @@ public class AuthorController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody AuthorDTO authorDTO) {
-        Author author = service.findById(authorDTO.getIdAuthor());
+        Author author = service.findById(authorDTO.idAuthor());
         if (author == null)
-            throw new ModelNotFoundException("ID NOT FOUND:" + authorDTO.getIdAuthor());
+            throw new ModelNotFoundException("ID NOT FOUND:" + authorDTO.idAuthor());
         return new ResponseEntity<>(service.update(convertToEntity(authorDTO)),OK);
     }
 

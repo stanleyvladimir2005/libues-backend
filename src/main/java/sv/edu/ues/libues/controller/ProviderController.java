@@ -55,9 +55,9 @@ public class ProviderController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody ProviderDTO providerDTO) {
-        Provider provider = service.findById(providerDTO.getIdProvider());
+        Provider provider = service.findById(providerDTO.idProvider());
         if (provider == null)
-            throw new ModelNotFoundException("ID NOT FOUND:" + providerDTO.getIdProvider());
+            throw new ModelNotFoundException("ID NOT FOUND:" + providerDTO.idProvider());
         return new ResponseEntity<>(service.update(convertToEntity(providerDTO)),OK);
     }
 

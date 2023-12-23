@@ -55,9 +55,9 @@ public class EditorialController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody EditorialDTO editorialDTO) {
-        Editorial editorial = service.findById(editorialDTO.getIdEditorial());
+        Editorial editorial = service.findById(editorialDTO.idEditorial());
         if (editorial == null)
-            throw new ModelNotFoundException("ID NOT FOUND:" + editorialDTO.getIdEditorial());
+            throw new ModelNotFoundException("ID NOT FOUND:" + editorialDTO.idEditorial());
         return new ResponseEntity<>(service.update(convertToEntity(editorialDTO)),OK);
     }
 

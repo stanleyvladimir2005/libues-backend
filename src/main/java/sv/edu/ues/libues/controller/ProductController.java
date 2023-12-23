@@ -55,9 +55,9 @@ public class ProductController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody ProductDTO productDTO) {
-        Product product = service.findById(productDTO.getIdProduct());
+        Product product = service.findById(productDTO.idProduct());
         if (product == null)
-            throw new ModelNotFoundException("ID NOT FOUND:" + productDTO.getIdProduct());
+            throw new ModelNotFoundException("ID NOT FOUND:" + productDTO.idProduct());
         return new ResponseEntity<>(service.update(convertToEntity(productDTO)),OK);
     }
 
