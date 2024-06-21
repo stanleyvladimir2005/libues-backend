@@ -1,6 +1,7 @@
 package sv.edu.ues.libues.controller;
 
 import jakarta.validation.Valid;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import sv.edu.ues.libues.dto.AuthorDTO;
 import sv.edu.ues.libues.exceptions.ModelNotFoundException;
 import sv.edu.ues.libues.model.Author;
 import sv.edu.ues.libues.service.IAuthorService;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,14 +31,14 @@ public class AuthorController {
 
     @GetMapping
     public ResponseEntity<List<AuthorDTO>> findAll(){
-        List<AuthorDTO> author = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        val author = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(author, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDTO> findById(@PathVariable("id") Long id){
         AuthorDTO dtoResponse;
-        Author author = service.findById(id);
+        val author = service.findById(id);
         if (author == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -48,14 +48,14 @@ public class AuthorController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(@Valid @RequestBody AuthorDTO authorDTO) {
-        Author author = service.save(convertToEntity(authorDTO));
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(author.getIdAuthor()).toUri();
+        val author = service.save(convertToEntity(authorDTO));
+        val location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(author.getIdAuthor()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody AuthorDTO authorDTO) {
-        Author author = service.findById(authorDTO.idAuthor());
+        val author = service.findById(authorDTO.idAuthor());
         if (author == null)
             throw new ModelNotFoundException("ID NOT FOUND:" + authorDTO.idAuthor());
         return new ResponseEntity<>(service.update(convertToEntity(authorDTO)),OK);
@@ -63,7 +63,7 @@ public class AuthorController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Author autor = service.findById(id);
+        val autor = service.findById(id);
         if (autor == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -73,7 +73,7 @@ public class AuthorController {
 
     @GetMapping(value="/pageableAuthor", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<AuthorDTO>> listPageable(Pageable pageable) {
-        Page<AuthorDTO> authorDTO = service.listPageable(pageable).map(this::convertToDto);
+        val authorDTO = service.listPageable(pageable).map(this::convertToDto);
         return new ResponseEntity<>(authorDTO, OK);
     }
 

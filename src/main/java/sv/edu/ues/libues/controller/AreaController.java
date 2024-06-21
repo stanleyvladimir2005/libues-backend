@@ -1,6 +1,7 @@
 package sv.edu.ues.libues.controller;
 
 import jakarta.validation.Valid;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import sv.edu.ues.libues.dto.AreaDTO;
 import sv.edu.ues.libues.exceptions.ModelNotFoundException;
 import sv.edu.ues.libues.model.Area;
 import sv.edu.ues.libues.service.IAreaService;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,14 +31,14 @@ public class AreaController {
 
     @GetMapping
     public ResponseEntity<List<AreaDTO>> findAll(){
-        List<AreaDTO> Area = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        val Area = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(Area, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AreaDTO> findById(@PathVariable("id") Long id){
         AreaDTO dtoResponse;
-        Area area = service.findById(id);
+        val area = service.findById(id);
         if (area == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -48,14 +48,14 @@ public class AreaController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(@Valid @RequestBody AreaDTO areaDTO) {
-        Area area = service.save(convertToEntity(areaDTO));
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(area.getIdArea()).toUri();
+        val area = service.save(convertToEntity(areaDTO));
+        val location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(area.getIdArea()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody AreaDTO areaDTO) {
-        Area area = service.findById(areaDTO.idArea());
+        val area = service.findById(areaDTO.idArea());
         if (area == null)
             throw new ModelNotFoundException("ID NOT FOUND:" + areaDTO.idArea());
         return new ResponseEntity<>(service.update(convertToEntity(areaDTO)),OK);
@@ -63,7 +63,7 @@ public class AreaController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Area area = service.findById(id);
+        val area = service.findById(id);
         if (area == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -73,7 +73,7 @@ public class AreaController {
 
     @GetMapping(value="/pageableArea", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<AreaDTO>> listPageable(Pageable pageable) {
-        Page<AreaDTO> areaDTO = service.listPageable(pageable).map(this::convertToDto);
+        val areaDTO = service.listPageable(pageable).map(this::convertToDto);
         return new ResponseEntity<>(areaDTO, OK);
     }
 

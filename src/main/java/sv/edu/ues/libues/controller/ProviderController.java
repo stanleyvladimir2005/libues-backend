@@ -1,6 +1,7 @@
 package sv.edu.ues.libues.controller;
 
 import jakarta.validation.Valid;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import sv.edu.ues.libues.dto.ProviderDTO;
 import sv.edu.ues.libues.exceptions.ModelNotFoundException;
 import sv.edu.ues.libues.model.Provider;
 import sv.edu.ues.libues.service.IProviderService;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,14 +31,14 @@ public class ProviderController {
 
     @GetMapping
     public ResponseEntity<List<ProviderDTO>> findAll(){
-        List<ProviderDTO> Provider = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
-        return new ResponseEntity<>(Provider, HttpStatus.OK);
+        val provider = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        return new ResponseEntity<>(provider, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProviderDTO> findById(@PathVariable("id") Long id){
         ProviderDTO dtoResponse;
-        Provider Provider = service.findById(id);
+        val Provider = service.findById(id);
         if (Provider == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -48,14 +48,14 @@ public class ProviderController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(@Valid @RequestBody ProviderDTO providerDTO) {
-        Provider provider = service.save(convertToEntity(providerDTO));
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(provider.getIdProvider()).toUri();
+        val provider = service.save(convertToEntity(providerDTO));
+        val location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(provider.getIdProvider()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody ProviderDTO providerDTO) {
-        Provider provider = service.findById(providerDTO.idProvider());
+        val provider = service.findById(providerDTO.idProvider());
         if (provider == null)
             throw new ModelNotFoundException("ID NOT FOUND:" + providerDTO.idProvider());
         return new ResponseEntity<>(service.update(convertToEntity(providerDTO)),OK);
@@ -63,7 +63,7 @@ public class ProviderController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Provider provider = service.findById(id);
+        val provider = service.findById(id);
         if (provider == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -73,7 +73,7 @@ public class ProviderController {
 
     @GetMapping(value="/pageableProvider", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ProviderDTO>> listPageable(Pageable pageable) {
-        Page<ProviderDTO> providerDTO = service.listPageable(pageable).map(this::convertToDto);
+        val providerDTO = service.listPageable(pageable).map(this::convertToDto);
         return new ResponseEntity<>(providerDTO, OK);
     }
 

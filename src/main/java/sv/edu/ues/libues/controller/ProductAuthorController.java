@@ -1,6 +1,7 @@
 package sv.edu.ues.libues.controller;
 
 import jakarta.validation.Valid;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,14 +30,14 @@ public class ProductAuthorController {
 
     @GetMapping
     public ResponseEntity<List<ProductAuthorDTO>> findAll(){
-        List<ProductAuthorDTO> ProductAuthor = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
-        return new ResponseEntity<>(ProductAuthor, HttpStatus.OK);
+        val productAuthor = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        return new ResponseEntity<>(productAuthor, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductAuthorDTO> findById(@PathVariable("id") Long id){
         ProductAuthorDTO dtoResponse;
-        ProductAuthor productAuthor = service.findById(id);
+        val productAuthor = service.findById(id);
         if (productAuthor == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -56,7 +57,7 @@ public class ProductAuthorController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        ProductAuthor ProductAuthor = service.findById(id);
+        val ProductAuthor = service.findById(id);
         if (ProductAuthor == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -66,8 +67,8 @@ public class ProductAuthorController {
 
     @GetMapping(value="/pageableProductAuthor", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ProductAuthorDTO>> listPageable(Pageable pageable) {
-        Page<ProductAuthorDTO> ProductAuthorDTO = service.listPageable(pageable).map(this::convertToDto);
-        return new ResponseEntity<>(ProductAuthorDTO, OK);
+        val productAuthorDTO = service.listPageable(pageable).map(this::convertToDto);
+        return new ResponseEntity<>(productAuthorDTO, OK);
     }
 
     private ProductAuthorDTO convertToDto(ProductAuthor obj){

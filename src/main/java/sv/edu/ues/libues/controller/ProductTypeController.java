@@ -1,6 +1,7 @@
 package sv.edu.ues.libues.controller;
 
 import jakarta.validation.Valid;
+import lombok.val;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import sv.edu.ues.libues.dto.ProductTypeDTO;
 import sv.edu.ues.libues.exceptions.ModelNotFoundException;
 import sv.edu.ues.libues.model.ProductType;
 import sv.edu.ues.libues.service.IProductTypeService;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,14 +31,14 @@ public class ProductTypeController {
 
     @GetMapping
     public ResponseEntity<List<ProductTypeDTO>> findAll(){
-        List<ProductTypeDTO> productType = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
+        val productType = service.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(productType, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductTypeDTO> findById(@PathVariable("id") Long id){
         ProductTypeDTO dtoResponse;
-        ProductType productType = service.findById(id);
+        val productType = service.findById(id);
         if (productType == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -48,14 +48,14 @@ public class ProductTypeController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> save(@Valid @RequestBody ProductTypeDTO productTypeDTO) {
-        ProductType productType = service.save(convertToEntity(productTypeDTO));
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productType.getIdProductType()).toUri();
+        val productType = service.save(convertToEntity(productTypeDTO));
+        val location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(productType.getIdProductType()).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> update(@Valid @RequestBody ProductTypeDTO productTypeDTO) {
-        ProductType productType = service.findById(productTypeDTO.idProductType());
+        val productType = service.findById(productTypeDTO.idProductType());
         if (productType == null)
             throw new ModelNotFoundException("ID NOT FOUND:" + productTypeDTO.idProductType());
         return new ResponseEntity<>(service.update(convertToEntity(productTypeDTO)),OK);
@@ -63,7 +63,7 @@ public class ProductTypeController {
 
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        ProductType productType = service.findById(id);
+        val productType = service.findById(id);
         if (productType == null)
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
         else
@@ -73,7 +73,7 @@ public class ProductTypeController {
 
     @GetMapping(value="/pageableProductType", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<ProductTypeDTO>> listPageable(Pageable pageable) {
-        Page<ProductTypeDTO> productTypeDTO = service.listPageable(pageable).map(this::convertToDto);
+        val productTypeDTO = service.listPageable(pageable).map(this::convertToDto);
         return new ResponseEntity<>(productTypeDTO, OK);
     }
 
