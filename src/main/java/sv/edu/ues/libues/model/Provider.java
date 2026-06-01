@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +15,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name="provider")
 @SQLDelete(sql = "UPDATE provider SET status = false WHERE id_provider = ?")
-@Where(clause = "status = true")
+@SQLRestriction("status = true")
 public class Provider {
 
     @Id

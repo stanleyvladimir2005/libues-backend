@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.SQLRestriction;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +15,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name="author")
 @SQLDelete(sql = "UPDATE author SET status = false WHERE id_author = ?")
-@Where(clause = "status = true")
+@SQLRestriction("status = true")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Author {
 
